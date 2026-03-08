@@ -53,3 +53,18 @@ export type FarmTemplate = {
   createdBy: string;
   ownerUserId: string;
 };
+
+export type ProductTemplate = {
+  id: string;
+  farmId: string;
+  name: string;
+  descriptionLt: ProductDraft["descriptionLt"];
+  price: {
+    amount: string;
+    currency: string;
+    unit: string;
+  };
+  categoryIds: string[];
+  isActive: boolean;
+  updatedAt: string;
+};

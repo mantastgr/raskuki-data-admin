@@ -9,7 +9,8 @@ type ActionButtonsProps = {
   onEnhance: () => void;
   onApplyAiToJson: () => void;
   onResetToOriginal: () => void;
-  onBuildFarmTemplateJson: () => void;
+  onBuildTemplateJson: () => void;
+  buildTemplateLabel: string;
 };
 
 export function ActionButtons({
@@ -23,7 +24,8 @@ export function ActionButtons({
   onEnhance,
   onApplyAiToJson,
   onResetToOriginal,
-  onBuildFarmTemplateJson,
+  onBuildTemplateJson,
+  buildTemplateLabel,
 }: ActionButtonsProps) {
   return (
     <div className="flex flex-wrap gap-2">
@@ -60,11 +62,11 @@ export function ActionButtons({
       </button>
 
       <button
-        onClick={onBuildFarmTemplateJson}
+        onClick={onBuildTemplateJson}
         disabled={!hasDraft}
         className="rounded bg-orange-700 px-4 py-2 text-white disabled:opacity-50"
       >
-        Build Farm Template JSON
+        {buildTemplateLabel}
       </button>
     </div>
   );

@@ -11,8 +11,17 @@ import {
   insertEmojisInParagraph,
 } from "@/lib/description";
 import { buildFarmTemplate } from "@/lib/farm-template";
-import type { FarmTemplate, PreviewEnhancement, ProductDraft } from "@/lib/types";
+import { buildProductTemplate } from "@/lib/product-template";
+import type {
+  FarmTemplate,
+  PreviewEnhancement,
+  ProductDraft,
+  ProductTemplate,
+} from "@/lib/types";
+
+type GeneratorMode = "farm" | "product";
 export default function HomePage() {
+  const [mode, setMode] = useState<GeneratorMode>("farm");
   const [appliedDraft, setAppliedDraft] = useState<ProductDraft | null>(null);
 
   const [enhancement, setEnhancement] = useState<PreviewEnhancement | null>(
@@ -72,11 +81,17 @@ export default function HomePage() {
     setResult(JSON.stringify(draft, null, 2));
   }
 
-  function handleBuildFarmTemplateJson() {
+  function handleBuildTemplateJson() {
     const sourceDraft = appliedDraft ?? draft;
     if (!sourceDraft) return;
 
-    const template: FarmTemplate = buildFarmTemplate(sourceDraft);
+    if (mode === "farm") {
+      const template: FarmTemplate = buildFarmTemplate(sourceDraft);
+      setResult(JSON.stringify(template, null, 2));
+      return;
+    }
+
+    const template: ProductTemplate = buildProductTemplate(sourceDraft);
     setResult(JSON.stringify(template, null, 2));
   }
 
@@ -84,8 +99,31 @@ export default function HomePage() {
     <main className="mx-auto max-w-4xl p-6 space-y-4">
       <h1 className="text-2xl font-semibold">Raskuki Data Admin</h1>
       <p className="text-sm text-gray-600">
-        Paste text and generate a product draft JSON.
+        Paste text and generate structured description JSON.
       </p>
+
+      <div className="flex gap-2">
+        <button
+          onClick={() => setMode("farm")}
+          className={`rounded px-4 py-2 text-sm ${
+            mode === "farm"
+              ? "bg-black text-white"
+              : "bg-gray-200 text-gray-800"
+          }`}
+        >
+          Farm Mode
+        </button>
+        <button
+          onClick={() => setMode("product")}
+          className={`rounded px-4 py-2 text-sm ${
+            mode === "product"
+              ? "bg-black text-white"
+              : "bg-gray-200 text-gray-800"
+          }`}
+        >
+          Product Mode
+        </button>
+      </div>
 
       <DescriptionInput text={text} onChange={setText} />
 
@@ -100,7 +138,12 @@ export default function HomePage() {
         onEnhance={handleEnhance}
         onApplyAiToJson={handleApplyEnhancementToJson}
         onResetToOriginal={handleResetToOriginal}
-        onBuildFarmTemplateJson={handleBuildFarmTemplateJson}
+        onBuildTemplateJson={handleBuildTemplateJson}
+        buildTemplateLabel={
+          mode === "farm"
+            ? "Build Farm Template JSON"
+            : "Build Product Template JSON"
+        }
       />
 
       <div className="grid gap-4 md:grid-cols-2">
