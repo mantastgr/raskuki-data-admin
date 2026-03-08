@@ -9,27 +9,49 @@ type ProductDescriptionSection =
   | { type: "paragraph"; content: string }
   | { type: "list"; items: string[] };
 
+const LIST_ITEM_REGEX = /^(?:[-*]|\d+\.)\s+(.+)$/;
+
 function textToSections(text: string): ProductDescriptionSection[] {
-  const lines = text
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean);
-
-  const listItems = lines
-    .filter((l) => l.startsWith("- ") || l.startsWith("* "))
-    .map((l) => l.replace(/^[-*]\s+/, "").trim());
-
-  const paragraphLines = lines.filter(
-    (l) => !l.startsWith("- ") && !l.startsWith("* "),
-  );
-
   const sections: ProductDescriptionSection[] = [];
-  if (paragraphLines.length > 0) {
+  const paragraphLines: string[] = [];
+  const listItems: string[] = [];
+
+  const flushParagraph = () => {
+    if (paragraphLines.length === 0) return;
     sections.push({ type: "paragraph", content: paragraphLines.join(" ") });
+    paragraphLines.length = 0;
+  };
+
+  const flushList = () => {
+    if (listItems.length === 0) return;
+    sections.push({ type: "list", items: [...listItems] });
+    listItems.length = 0;
+  };
+
+  for (const rawLine of text.split("\n")) {
+    const line = rawLine.trim();
+
+    // Blank lines split section groups.
+    if (!line) {
+      flushParagraph();
+      flushList();
+      continue;
+    }
+
+    const listMatch = line.match(LIST_ITEM_REGEX);
+    if (listMatch) {
+      flushParagraph();
+      listItems.push(listMatch[1].trim());
+      continue;
+    }
+
+    flushList();
+    paragraphLines.push(line);
   }
-  if (listItems.length > 0) {
-    sections.push({ type: "list", items: listItems });
-  }
+
+  flushParagraph();
+  flushList();
+
   return sections;
 }
 
@@ -45,15 +67,10 @@ export async function POST(req: Request) {
   }
 
   const text = parsed.data.text;
-  const firstLine =
-    text
-      .split("\n")
-      .map((l) => l.trim())
-      .find(Boolean) ?? "Draft title";
 
   const draft = {
     descriptionLt: {
-      title: firstLine.slice(0, 120),
+      title: "",
       sections: textToSections(text),
     },
   };
