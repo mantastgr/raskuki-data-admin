@@ -1,17 +1,11 @@
 "use client";
 
 import { useState } from "react";
-
-type ProductDescriptionSection =
-  | { type: "paragraph"; content: string }
-  | { type: "list"; items: string[] };
-
-type ProductDraft = {
-  descriptionLt: {
-    title: string;
-    sections: ProductDescriptionSection[];
-  };
-};
+import {
+  buildFarmTemplate,
+  type FarmTemplate,
+  type ProductDraft,
+} from "@/lib/farm-template";
 
 type PreviewEnhancement = {
   sectionEnhancements: Array<{
@@ -186,6 +180,14 @@ export default function HomePage() {
     setResult(JSON.stringify(draft, null, 2));
   }
 
+  function handleBuildFarmTemplateJson() {
+    const sourceDraft = appliedDraft ?? draft;
+    if (!sourceDraft) return;
+
+    const template: FarmTemplate = buildFarmTemplate(sourceDraft);
+    setResult(JSON.stringify(template, null, 2));
+  }
+
   return (
     <main className="mx-auto max-w-4xl p-6 space-y-4">
       <h1 className="text-2xl font-semibold">Raskuki Data Admin</h1>
@@ -238,6 +240,14 @@ export default function HomePage() {
         className="rounded bg-gray-700 px-4 py-2 text-white disabled:opacity-50"
       >
         Reset To Original
+      </button>
+
+      <button
+        onClick={handleBuildFarmTemplateJson}
+        disabled={!draft}
+        className="rounded bg-orange-700 px-4 py-2 text-white disabled:opacity-50"
+      >
+        Build Farm Template JSON
       </button>
 
       <div className="grid gap-4 md:grid-cols-2">
