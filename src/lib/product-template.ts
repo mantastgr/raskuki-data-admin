@@ -2,8 +2,10 @@ import type { ProductDraft, ProductTemplate } from "@/lib/types";
 
 export function buildProductTemplate(draft: ProductDraft): ProductTemplate {
   return {
+    schemaVersion: 2,
     id: "TODO",
     farmId: "TODO",
+    locationNameNormalised: "TODO",
     name: "TODO",
     descriptionLt: {
       title: "",
@@ -16,6 +18,10 @@ export function buildProductTemplate(draft: ProductDraft): ProductTemplate {
     },
     categoryIds: [],
     isActive: true,
-    updatedAt: "TODO",
+    updatedAt: "TODO_ISO_TIMESTAMP",
+    seasonality: {
+      isSeasonal: false,
+      months: [],
+    },
   };
 }

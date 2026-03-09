@@ -44,8 +44,8 @@ export function buildFarmTemplate(draft: ProductDraft): FarmTemplate {
     ratingCount: 0,
     ratingTotal: 0,
     favouritesCount: 0,
-    createdAt: "TODO",
-    updatedAt: "TODO",
+    createdAt: "TODO_ISO_TIMESTAMP",
+    updatedAt: "TODO_ISO_TIMESTAMP",
     createdBy: "TODO",
     ownerUserId: "TODO",
   };

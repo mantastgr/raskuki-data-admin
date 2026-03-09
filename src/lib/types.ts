@@ -1,3 +1,22 @@
+export const LINK_TYPES = [
+  "eshop",
+  "facebook",
+  "instagram",
+  "website",
+  "youtube",
+] as const;
+
+export type LinkType = (typeof LINK_TYPES)[number];
+
+export const SERVICE_KEYS = [
+  "products",
+  "delivery",
+  "food",
+  "education",
+  "events",
+  "onSite",
+] as const;
+
 export type ProductDescriptionSection =
   | { type: "paragraph"; content: string }
   | { type: "list"; items: string[] };
@@ -31,7 +50,7 @@ export type FarmTemplate = {
   postalCode: string;
   openNow: boolean;
   contact: { email: string; phone: string };
-  links: Array<{ type: string; url: string }>;
+  links: Array<{ type: LinkType; url: string }>;
   images: string[];
   productCategories: Record<string, { lt: string; en: string }>;
   services: {
@@ -55,8 +74,10 @@ export type FarmTemplate = {
 };
 
 export type ProductTemplate = {
+  schemaVersion: 2;
   id: string;
   farmId: string;
+  locationNameNormalised: string;
   name: string;
   descriptionLt: ProductDraft["descriptionLt"];
   price: {
@@ -67,4 +88,8 @@ export type ProductTemplate = {
   categoryIds: string[];
   isActive: boolean;
   updatedAt: string;
+  seasonality: {
+    isSeasonal: false;
+    months: [];
+  };
 };
