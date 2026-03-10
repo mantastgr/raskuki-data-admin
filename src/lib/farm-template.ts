@@ -5,6 +5,7 @@ export function buildFarmTemplate(draft: ProductDraft): FarmTemplate {
     schemaVersion: 2,
     id: "TODO",
     title: "TODO",
+    farmTypes: [{ id: "TODO", lt: "TODO", en: "TODO" }],
     locationNameNormalised: "TODO",
     titleNormalised: "TODO",
     descriptionLt: draft.descriptionLt,
@@ -29,6 +30,7 @@ export function buildFarmTemplate(draft: ProductDraft): FarmTemplate {
       education: false,
       events: false,
       onSite: false,
+      partnerships: false,
     },
     openHoursStructured: {
       monday: null,

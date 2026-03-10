@@ -42,6 +42,7 @@ export type FarmTemplate = {
   schemaVersion: 2;
   id: string;
   title: string;
+  farmTypes: Array<{ id: string; lt: string; en: string }>;
   locationNameNormalised: string;
   titleNormalised: string;
   descriptionLt: ProductDraft["descriptionLt"];
@@ -60,6 +61,7 @@ export type FarmTemplate = {
     education: boolean;
     events: boolean;
     onSite: boolean;
+    partnerships: boolean;
   };
   openHoursStructured: Record<string, { open: string; close: string } | null>;
   searchKeywords: string[];
