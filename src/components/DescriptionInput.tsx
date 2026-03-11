@@ -19,6 +19,9 @@ export function DescriptionInput({ text, onChange }: DescriptionInputProps) {
           <code>- item</code>, <code>* item</code>, or <code>1. item</code> =
           list item
         </p>
+        <p>
+          <code>## Heading text</code> = small heading
+        </p>
       </div>
     </>
   );

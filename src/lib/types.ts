@@ -19,6 +19,7 @@ export const SERVICE_KEYS = [
 
 export type ProductDescriptionSection =
   | { type: "paragraph"; content: string }
+  | { type: "heading"; content: string }
   | { type: "list"; items: string[] };
 
 export type ProductDraft = {

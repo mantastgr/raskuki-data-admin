@@ -49,6 +49,17 @@ export function PhonePreview({
                 );
               }
 
+              if (section.type === "heading") {
+                return (
+                  <h4
+                    key={index}
+                    className="text-sm font-semibold leading-6 text-gray-900"
+                  >
+                    {section.content}
+                  </h4>
+                );
+              }
+
               return (
                 <ul key={index} className="list-disc space-y-1 pl-5 text-gray-800">
                   {section.items.map((item, itemIndex) => (

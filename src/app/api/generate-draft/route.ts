@@ -7,9 +7,11 @@ const BodySchema = z.object({
 
 type ProductDescriptionSection =
   | { type: "paragraph"; content: string }
+  | { type: "heading"; content: string }
   | { type: "list"; items: string[] };
 
 const LIST_ITEM_REGEX = /^(?:[-*]|\d+\.)\s+(.+)$/;
+const HEADING_REGEX = /^##\s+(.+)$/;
 
 function textToSections(text: string): ProductDescriptionSection[] {
   const sections: ProductDescriptionSection[] = [];
@@ -42,6 +44,14 @@ function textToSections(text: string): ProductDescriptionSection[] {
     if (listMatch) {
       flushParagraph();
       listItems.push(listMatch[1].trim());
+      continue;
+    }
+
+    const headingMatch = line.match(HEADING_REGEX);
+    if (headingMatch) {
+      flushParagraph();
+      flushList();
+      sections.push({ type: "heading", content: headingMatch[1].trim() });
       continue;
     }
 

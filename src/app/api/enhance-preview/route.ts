@@ -6,6 +6,7 @@ const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const SectionSchema = z.union([
   z.object({ type: z.literal("paragraph"), content: z.string() }),
+  z.object({ type: z.literal("heading"), content: z.string() }),
   z.object({ type: z.literal("list"), items: z.array(z.string()) }),
 ]);
 
