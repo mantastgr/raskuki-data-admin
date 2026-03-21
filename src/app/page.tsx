@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ActionButtons } from "@/components/ActionButtons";
 import { DescriptionInput } from "@/components/DescriptionInput";
+import { FirestoreImportPanel } from "@/components/FirestoreImportPanel";
 import { PhonePreview } from "@/components/PhonePreview";
 import { RawJsonPanel } from "@/components/RawJsonPanel";
 import { enhancePreview, generateDraft } from "@/lib/api-client";
@@ -156,6 +157,8 @@ export default function HomePage() {
           insertEmojisInParagraph={insertEmojisInParagraph}
         />
       </div>
+
+      <FirestoreImportPanel />
     </main>
   );
 }

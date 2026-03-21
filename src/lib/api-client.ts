@@ -1,5 +1,28 @@
 import type { PreviewEnhancement, ProductDraft } from "@/lib/types";
 
+type ValidationKind = "farm" | "product";
+
+type ValidationResponse = {
+  ok: boolean;
+  kind?: ValidationKind;
+  data?: unknown;
+  error?: unknown;
+};
+
+type DryRunFarmImportResponse = {
+  ok: boolean;
+  path?: string;
+  data?: unknown;
+  error?: unknown;
+};
+
+type WriteFarmImportResponse = {
+  ok: boolean;
+  path?: string;
+  data?: unknown;
+  error?: unknown;
+};
+
 async function postJson<TResponse>(
   url: string,
   body: unknown,
@@ -33,4 +56,30 @@ export async function enhancePreview(
     { draft },
   );
   return data.enhancement;
+}
+
+export async function validateJson(
+  kind: ValidationKind,
+  jsonText: string,
+): Promise<ValidationResponse> {
+  return postJson<ValidationResponse>("/api/validate-json", {
+    kind,
+    jsonText,
+  });
+}
+
+export async function dryRunFarmImport(
+  jsonText: string,
+): Promise<DryRunFarmImportResponse> {
+  return postJson<DryRunFarmImportResponse>("/api/import-farm/dry-run", {
+    jsonText,
+  });
+}
+
+export async function writeFarmImport(
+  jsonText: string,
+): Promise<WriteFarmImportResponse> {
+  return postJson<WriteFarmImportResponse>("/api/import-farm/write", {
+    jsonText,
+  });
 }
