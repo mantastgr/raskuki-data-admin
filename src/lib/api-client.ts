@@ -23,6 +23,20 @@ type WriteFarmImportResponse = {
   error?: unknown;
 };
 
+type DryRunProductImportResponse = {
+  ok: boolean;
+  path?: string;
+  data?: unknown;
+  error?: unknown;
+};
+
+type WriteProductImportResponse = {
+  ok: boolean;
+  path?: string;
+  data?: unknown;
+  error?: unknown;
+};
+
 async function postJson<TResponse>(
   url: string,
   body: unknown,
@@ -80,6 +94,22 @@ export async function writeFarmImport(
   jsonText: string,
 ): Promise<WriteFarmImportResponse> {
   return postJson<WriteFarmImportResponse>("/api/import-farm/write", {
+    jsonText,
+  });
+}
+
+export async function dryRunProductImport(
+  jsonText: string,
+): Promise<DryRunProductImportResponse> {
+  return postJson<DryRunProductImportResponse>("/api/import-product/dry-run", {
+    jsonText,
+  });
+}
+
+export async function writeProductImport(
+  jsonText: string,
+): Promise<WriteProductImportResponse> {
+  return postJson<WriteProductImportResponse>("/api/import-product/write", {
     jsonText,
   });
 }

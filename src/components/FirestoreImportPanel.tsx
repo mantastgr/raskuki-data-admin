@@ -3,8 +3,10 @@
 import { useState } from "react";
 import {
   dryRunFarmImport,
+  dryRunProductImport,
   validateJson,
   writeFarmImport,
+  writeProductImport,
 } from "@/lib/api-client";
 
 type ImportKind = "farm" | "product";
@@ -57,6 +59,42 @@ export function FirestoreImportPanel() {
 
     try {
       const data = await writeFarmImport(jsonText);
+      setResult(JSON.stringify(data, null, 2));
+    } catch (error) {
+      setResult(
+        JSON.stringify({ ok: false, error: String(error) }, null, 2),
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDryRunProductImport() {
+    if (kind !== "product") return;
+
+    setLoading(true);
+    setResult("");
+
+    try {
+      const data = await dryRunProductImport(jsonText);
+      setResult(JSON.stringify(data, null, 2));
+    } catch (error) {
+      setResult(
+        JSON.stringify({ ok: false, error: String(error) }, null, 2),
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleWriteProductImport() {
+    if (kind !== "product") return;
+
+    setLoading(true);
+    setResult("");
+
+    try {
+      const data = await writeProductImport(jsonText);
       setResult(JSON.stringify(data, null, 2));
     } catch (error) {
       setResult(
@@ -130,6 +168,22 @@ export function FirestoreImportPanel() {
           className="rounded bg-rose-700 px-4 py-2 text-white disabled:opacity-50"
         >
           {loading ? "Working..." : "Write Farm to Firestore"}
+        </button>
+
+        <button
+          onClick={handleDryRunProductImport}
+          disabled={loading || !jsonText.trim() || kind !== "product"}
+          className="rounded bg-emerald-700 px-4 py-2 text-white disabled:opacity-50"
+        >
+          {loading ? "Working..." : "Dry Run Product Import"}
+        </button>
+
+        <button
+          onClick={handleWriteProductImport}
+          disabled={loading || !jsonText.trim() || kind !== "product"}
+          className="rounded bg-rose-700 px-4 py-2 text-white disabled:opacity-50"
+        >
+          {loading ? "Working..." : "Write Product to Firestore"}
         </button>
       </div>
 
