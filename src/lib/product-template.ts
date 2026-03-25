@@ -12,10 +12,11 @@ export function buildProductTemplate(draft: ProductDraft): ProductTemplate {
       sections: draft.descriptionLt.sections,
     },
     price: {
-      amount: "TODO",
+      amount: 0,
       currency: "EUR",
       unit: "vnt",
     },
+    priceOptions: [],
     categoryIds: [],
     isActive: true,
     updatedAt: "TODO_ISO_TIMESTAMP",

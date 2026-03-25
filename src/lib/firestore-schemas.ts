@@ -110,10 +110,18 @@ export const ProductSchema = z.object({
   name: z.string().min(1),
   descriptionLt: DescriptionLtSchema,
   price: z.object({
-    amount: z.string().min(1),
+    amount: z.number().nonnegative(),
     currency: z.string().min(1),
     unit: z.string().min(1),
   }),
+  priceOptions: z.array(
+    z.object({
+      amount: z.number().nonnegative(),
+      currency: z.string().min(1),
+      quantity: z.number().positive(),
+      quantityUnit: z.string().min(1),
+    }),
+  ),
   categoryIds: z.array(z.string().min(1)),
   isActive: z.boolean(),
   updatedAt: z.string().min(1),

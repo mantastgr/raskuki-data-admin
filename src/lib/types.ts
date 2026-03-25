@@ -84,10 +84,16 @@ export type ProductTemplate = {
   name: string;
   descriptionLt: ProductDraft["descriptionLt"];
   price: {
-    amount: string;
+    amount: number;
     currency: string;
     unit: string;
   };
+  priceOptions: Array<{
+    amount: number;
+    currency: string;
+    quantity: number;
+    quantityUnit: string;
+  }>;
   categoryIds: string[];
   isActive: boolean;
   updatedAt: string;
